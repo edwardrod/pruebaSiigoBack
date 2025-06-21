@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:3.9.8"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.0.0.2929"
+    }
+}
+
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.sonarqube' version "4.0.0.2929"
+}
+
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
+apply plugin: 'org.sonarqube'
+
+
+group = 'com.asulado'
+version = '1.0-SNAPSHOT'
+
+defaultTasks 'clean', 'test', 'aggregate'
+
+repositories {
+    mavenCentral()
+}
+
+wrapper {
+    distributionType Wrapper.DistributionType.ALL
+}
+
+
+ext {
+    serenityCoreVersion = "4.2.17"
+}
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-rest:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}"
+    implementation 'io.rest-assured:rest-assured:5.5.1'
+    implementation 'io.cucumber:cucumber-java:7.14.0'
+    implementation 'io.cucumber:cucumber-junit:7.14.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
+    implementation 'junit:junit:4.13.2'
+    implementation 'net.datafaker:datafaker:1.9.0'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    implementation 'org.postgresql:postgresql:42.7.5'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+}
+
+sonarqube {
+    properties {
+        property "sonar.java.binaries", "src/main"
+    }
+}
+
+test {
+    testLogging.showStandardStreams = true
+ useJUnitPlatform()   }
+
+
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
