@@ -26,6 +26,7 @@ public class PutUser implements Task {
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
                 Put.to("/api/users/" + id).with(request -> request
+                        .header("x-api-key","reqres-free-v1")
                         .header("Content-Type", "application/json")
                         .body(userData))
         );

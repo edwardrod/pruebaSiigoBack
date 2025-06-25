@@ -1,5 +1,6 @@
 package co.com.siigo.automation.tasks;
 
+
 import co.com.siigo.automation.models.UserData;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -8,6 +9,7 @@ import net.serenitybdd.screenplay.rest.interactions.Post;
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
 public class PostUser implements Task {
+
     private final UserData userData;
 
     public PostUser(UserData userData) {
@@ -21,9 +23,11 @@ public class PostUser implements Task {
     @Override
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
-                Post.to("/api/users").with(request -> request
-                        .header("Content-Type", "application/json")
-                        .body(userData))
+                Post.to("/api/users")
+                        .with(request -> request
+                                .header("x-api-key","reqres-free-v1")
+                                .header("Content-Type", "application/json")
+                                .body(userData))
         );
     }
 }

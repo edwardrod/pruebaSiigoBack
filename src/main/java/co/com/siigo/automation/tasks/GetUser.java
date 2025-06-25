@@ -8,21 +8,24 @@ import net.serenitybdd.screenplay.rest.interactions.Get;
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
 public class GetUser implements Task {
-    private final int id;
+    private final int pagina;
 
     public GetUser(int id) {
-        this.id = id;
+        this.pagina = id;
     }
 
-    public static GetUser withId(int id) {
+    public static GetUser withPage(int id) {
         return instrumented(GetUser.class, id);
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
-                Get.resource("/api/users/" + id)
-        );
+                Get.resource("/api/users/")
+                        .with(request -> request
+                                .header("x-api-key","reqres-free-v1")
+                                .queryParam("page",pagina)
+        ));
     }
 }
 

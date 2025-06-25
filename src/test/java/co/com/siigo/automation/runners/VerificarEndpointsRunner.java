@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(
-        features = "src/test/resources/features/back/verificar_endpoints.feature",
-        glue = "co.com.siigo.automation.stepdefinitions.back",
+        features = "src/test/resources/features/validacion_apis_reqres.feature",
+        glue = "co.com.siigo.automation.stepdefinitions",
+        tags = "@ValidacionApisReqres",
         snippets = CucumberOptions.SnippetType.CAMELCASE
 )
 public class VerificarEndpointsRunner {
 }
+
